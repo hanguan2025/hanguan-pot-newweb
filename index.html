@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>韓館韓式鍋物 | 正宗韓式鍋物 · 暖心暖胃的好味道</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* FAQ 特殊樣式補強 */
+        details summary::-webkit-details-marker { display: none; }
+        details[open] summary .faq-icon { transform: rotate(45deg); }
+        .faq-item { transition: all 0.3s ease; }
+
+        /* 圖庫互動效果 */
+        .gallery-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            cursor: default;
+        }
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(106, 64, 64, 0.1);
+        }
+
+        /* 文字遮罩層樣式 */
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4); /* 半透明黑底 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        .gallery-text {
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            transform: translateY(10px);
+            transition: transform 0.3s ease;
+            font-family: 'Noto Serif TC', serif;
+        }
+        .gallery-item:hover .gallery-text {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <nav class="fixed top-0 left-0 w-full z-50 bg-[var(--background)]/80 backdrop-blur-md border-b border-[var(--border)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="logo-container">
+                    <img src="images/logo.png" alt="韓館 Logo" class="logo-img">
+                    <h1 class="logo-text">韓館韓式鍋物</h1>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link font-medium">首頁</a>
+                    <a href="#menu" class="nav-link font-medium">嚴選菜單</a>
+                    <a href="#about" class="nav-link font-medium">關於我們</a>
+                    <a href="#contact" class="nav-link font-medium">聯絡預約</a>
+                    <a href="#contact" class="btn-primary">立即預約</a>
+                </div>
+
+                <div class="md:hidden flex items-center gap-4">
+                    <button class="hamburger" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-menu fixed inset-0 z-40 bg-[var(--background)] flex-col items-center justify-center space-y-8 md:hidden shadow-xl" style="display: none;">
+        <a href="#home" onclick="toggleMobileMenu()" class="text-2xl font-medium">首頁</a>
+        <a href="#menu" onclick="toggleMobileMenu()" class="text-2xl font-medium">嚴選菜單</a>
+        <a href="#about" onclick="toggleMobileMenu()" class="text-2xl font-medium">關於我們</a>
+        <a href="#contact" onclick="toggleMobileMenu()" class="text-2xl font-medium">聯絡預約</a>
+        <a href="#contact" onclick="toggleMobileMenu()" class="btn-primary text-xl">立即預約</a>
+    </div>
+
+    <main>
+        <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="images/hero-bg.jpg" alt="韓式鍋物背景" class="w-full h-full object-cover">
+                <div class="hero-overlay absolute inset-0"></div>
+            </div>
+            
+            <div class="relative z-10 text-center text-white px-4 max-w-4xl fade-in">
+                <h2 class="text-5xl md:text-7xl font-bold mb-4" style="font-family: 'Noto Serif TC', serif; line-height: 1.4;">
+                    韓館韓式鍋物
+                </h2>
+                <p class="text-xl md:text-2xl mb-6 tracking-widest opacity-90">正宗韓式鍋物 · 暖心暖胃的好味道</p>
+                
+                <a href="https://www.google.com/maps/place/%E9%9F%93%E9%A4%A8%E9%9F%93%E5%BC%8F%E9%8D%8B%E7%89%A9/@22.6208962,120.3097865,17z/data=!4m8!3m7!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!8m2!3d22.6208962!4d120.3097865!9m1!1b1!16s%2Fg%2F11xt6nvc1m?hl=zh-TW&entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D，並且讓此網頁可以隨時更新留言數及評分星級，其他頁面功能不要動到，以下是我現在的程式碼：" target="_blank" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/30 backdrop-blur-md border border-white/20 mb-10 hover:bg-black/50 transition-all transform hover:scale-105">
+                    <span class="text-yellow-400">★</span>
+                    <span class="font-bold">4.8</span>
+                    <span class="text-sm opacity-80">(93則評論)</span>
+                </a>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center flex-col-mobile">
+                    <a href="#menu" class="btn-primary text-lg px-10 py-4">查看餐點</a>
+                    <a href="#contact" class="btn-outline text-lg px-10 py-4" style="border-color: white; color: white;">立即訂位</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="py-24 bg-[#F8F6F5]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-center mb-16 text-[#4a2f2f]" style="font-family: 'Noto Serif TC', serif;">餐點圖庫</h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <div class="gallery-item relative overflow-hidden rounded-xl aspect-[4/3] shadow-md">
+                        <img src="images/韓館韓式鍋物_麻奶鍋.jpg" alt="麻奶鍋" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/800x600?text=麻奶鍋'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-text">麻奶鍋</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item relative overflow-hidden rounded-xl aspect-[4/3] shadow-md">
+                        <img src="images/韓館韓式鍋物_泡菜鍋.jpg" alt="泡菜鍋" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/800x600?text=泡菜鍋'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-text">泡菜鍋</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item relative overflow-hidden rounded-xl aspect-[4/3] shadow-md">
+                        <img src="images/韓館韓式鍋物_咖喱鍋.jpg" alt="咖喱鍋" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/800x600?text=咖喱鍋'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-text">咖喱鍋</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item relative overflow-hidden rounded-xl aspect-[4/3] shadow-md">
+                        <img src="images/韓館韓式鍋物_豆腐鍋.jpg" alt="豆腐鍋" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/800x600?text=豆腐鍋'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-text">豆腐鍋</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item relative overflow-hidden rounded-xl aspect-[4/3] shadow-md">
+                        <img src="images/韓館韓式鍋物_沙茶鍋.jpg" alt="沙茶鍋" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/800x600?text=沙茶鍋'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-text">沙茶鍋</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item relative overflow-hidden rounded-xl aspect-[4/3] shadow-md">
+                        <img src="images/韓館韓式鍋物_全品項.jpg" alt="全品項" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/800x600?text=全品項'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-text">全品項精選</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="py-24 bg-[#F8F6F5] border-t border-[var(--border)]">
+            <div class="max-w-3xl mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center mb-16 text-[#4a2f2f]" style="font-family: 'Noto Serif TC', serif;">常見問題</h2>
+                
+                <div class="space-y-4">
+                    <details class="faq-item group bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                        <summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 transition-colors list-none">
+                            <span class="text-lg font-semibold text-[#4a2f2f]">營業時間是什麼時候？</span>
+                            <span class="faq-icon text-2xl text-gray-400 transition-transform duration-300">+</span>
+                        </summary>
+                        <div class="p-6 pt-0 text-gray-600 border-t border-gray-50">
+                            我們週一至週五營業時間為 11:00 - 14:00 / 16:00 - 21:30，週六為公休日，週日營業時間為 16:00 - 21:00，詳細時間請關注我們的 Instagram 或來電確認。
+                        </div>
+                    </details>
+
+                    <details class="faq-item group bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                        <summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 transition-colors list-none">
+                            <span class="text-lg font-semibold text-[#4a2f2f]">需要預約嗎？</span>
+                            <span class="faq-icon text-2xl text-gray-400 transition-transform duration-300">+</span>
+                        </summary>
+                        <div class="p-6 pt-0 text-gray-600 border-t border-gray-50">
+                            為了提供最好的服務品質，我們建議您提前預約，特別是週末及例假日人潮較多。
+                        </div>
+                    </details>
+
+                    <details class="faq-item group bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                        <summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 transition-colors list-none">
+                            <span class="text-lg font-semibold text-[#4a2f2f]">有素食選項嗎？</span>
+                            <span class="faq-icon text-2xl text-gray-400 transition-transform duration-300">+</span>
+                        </summary>
+                        <div class="p-6 pt-0 text-gray-600 border-t border-gray-50">
+                            我們提供多款蔬食為主的鍋物選擇，詳情可以參考現場菜單或詢問店內夥伴。
+                        </div>
+                    </details>
+
+                    <details class="faq-item group bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                        <summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 transition-colors list-none">
+                            <span class="text-lg font-semibold text-[#4a2f2f]">每人消費大約多少？</span>
+                            <span class="faq-icon text-2xl text-gray-400 transition-transform duration-300">+</span>
+                        </summary>
+                        <div class="p-6 pt-0 text-gray-600 border-t border-gray-50">
+                            店內平均客單價約在 $1 - $200 之間，依個人點餐內容而定。
+                        </div>
+                    </details>
+
+                    <details class="faq-item group bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                        <summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 transition-colors list-none">
+                            <span class="text-lg font-semibold text-[#4a2f2f]">餐廳在哪裡？</span>
+                            <span class="faq-icon text-2xl text-gray-400 transition-transform duration-300">+</span>
+                        </summary>
+                        <div class="p-6 pt-0 text-gray-600 border-t border-gray-50">
+                            我們位於 <a href="https://www.google.com/maps/place/%E9%9F%93%E9%A4%A8%E9%9F%93%E5%BC%8F%E9%8D%8B%E7%89%A9/@22.6211945,120.3072706,19z/data=!4m15!1m8!3m7!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!2z6Z-T6aSo6Z-T5byP6Y2L54mp!8m2!3d22.6208962!4d120.3097865!10e9!16s%2Fg%2F11xt6nvc1m!3m5!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!8m2!3d22.6208962!4d120.3097865!16s%2Fg%2F11xt6nvc1m?hl=zh-TW&entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D，其他功能則不變，以下是我現在的程式碼：" target="_blank" class="text-[#4a2f2f] font-bold underline underline-offset-4 hover:opacity-70 transition-opacity">高雄市苓雅區苓雅一路262號</a>，鄰近的停車場為 <a href="https://www.google.com/maps/place/%E5%9B%9B%E7%B6%AD%E7%AB%8B%E9%AB%94%E7%AB%99%E5%81%9C%E8%BB%8A%E5%A0%B4(HB434)/@22.6214076,120.3105068,19z/data=!3m1!4b1!4m6!3m5!1s0x346e049b1ace52d7:0xff4dee06a3ca05d1!8m2!3d22.6214064!4d120.3111505!16s%2Fg%2F1vnng3ws?hl=zh-TW&entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D，其他功能不變，完成後給我完整的程式碼。" target="_blank" class="text-[#4a2f2f] font-bold underline underline-offset-4 hover:opacity-70 transition-opacity">四維立體停車場</a>，交通十分便利。
+                        </div>
+                    </details>
+
+                    <details class="faq-item group bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                        <summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 transition-colors list-none">
+                            <span class="text-lg font-semibold text-[#4a2f2f]">可以外帶或外送嗎？</span>
+                            <span class="faq-icon text-2xl text-gray-400 transition-transform duration-300">+</span>
+                        </summary>
+                        <div class="p-6 pt-0 text-gray-600 border-t border-gray-50">
+                            我們提供外帶服務，外送平台合作資訊可參考 Uber Eats 搜尋「韓館」。
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-[#4a2f2f] text-white relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6" style="font-family: 'Noto Serif TC', serif;">
+                    今天就來韓館，品嚐正宗韓式鍋物！
+                </h2>
+                <p class="text-lg md:text-xl mb-12 opacity-90 tracking-widest">
+                    新鮮食材 ・ 平價美味 ・ 暖心服務
+                </p>
+                
+                <div class="mb-12">
+                    <a href="#contact" class="inline-block bg-white text-[#4a2f2f] font-bold py-4 px-12 rounded-lg text-xl hover:bg-gray-100 transition-all transform hover:-translate-y-1 shadow-lg">
+                        立即預約訂位
+                    </a>
+                </div>
+
+                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12 text-sm md:text-base opacity-80">
+                    <div class="flex items-center gap-2">
+                        <span>📞</span> 0981-007-776
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span>📍</span> <a href="https://www.google.com/maps/place/%E9%9F%93%E9%A4%A8%E9%9F%93%E5%BC%8F%E9%8D%8B%E7%89%A9/@22.6211945,120.3072706,19z/data=!4m15!1m8!3m7!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!2z6Z-T6aSo6Z-T5byP6Y2L54mp!8m2!3d22.6208962!4d120.3097865!10e9!16s%2Fg%2F11xt6nvc1m!3m5!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!8m2!3d22.6208962!4d120.3097865!16s%2Fg%2F11xt6nvc1m?hl=zh-TW&entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D，其他功能則不變，以下是我現在的程式碼：" target="_blank" class="hover:underline">高雄市苓雅區苓雅一路262號</a>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span>📷</span> <a href="https://www.instagram.com/hanguan2025/" target="_blank" class="hover:underline">Instagram</a>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+                <div class="absolute top-[-10%] right-[-5%] w-64 h-64 rounded-full bg-white blur-3xl"></div>
+                <div class="absolute bottom-[-10%] left-[-5%] w-64 h-64 rounded-full bg-white blur-3xl"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#231A1A] text-white py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mb-16">
+                
+                <div class="col-span-1">
+                    <div class="logo-container mb-6">
+                        <img src="images/logo.png" alt="韓館 Logo" class="logo-img">
+                        <h3 class="logo-text text-white">韓館韓式鍋物</h3>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed">正宗韓式鍋物 · 暖心暖胃的好味道</p>
+                </div>
+
+                <div class="col-span-1">
+                    <h4 class="text-xl font-bold mb-8">快速連結</h4>
+                    <ul class="space-y-4 text-gray-400">
+                        <li><a href="#home" class="hover:text-white transition-colors">首頁</a></li>
+                        <li><a href="#menu" class="hover:text-white transition-colors">服務</a></li>
+                        <li><a href="#about" class="hover:text-white transition-colors">為什麼選擇我們</a></li>
+                        <li><a href="#gallery" class="hover:text-white transition-colors">圖庫</a></li>
+                        <li><a href="#faq" class="hover:text-white transition-colors">常見問題</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-span-1">
+                    <h4 class="text-xl font-bold mb-8">聯絡資訊</h4>
+                    <ul class="space-y-6 text-gray-400">
+                        <li class="flex items-center gap-3">
+                            <span>📞</span> 0981-007-776
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span>📍</span> 高雄市苓雅區苓雅一路262號
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span>🕒</span> 每日營業至 21:30
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span>📷</span> <a href="https://www.instagram.com/hanguan2025/" target="_blank" class="hover:text-white underline underline-offset-4">Instagram</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-gray-500">Copyright © 2026 韓館韓式鍋物. 版權所有.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 切換手機版選單
+        function toggleMobileMenu() {
+            const menu = document.querySelector('.mobile-menu');
+            if (menu.style.display === 'flex') {
+                menu.style.display = 'none';
+            } else {
+                menu.style.display = 'flex';
+            }
+        }
+    </script>
+    <script src="js/script.js"></script>
+</body>
+</html>
