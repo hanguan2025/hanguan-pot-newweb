@@ -103,16 +103,29 @@
         }
 
         /* 手機選單層級與動畫 */
-        .mobile-menu {
-            transition: opacity 0.3s ease;
-            background-color: #ffffff;
+        #mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: white;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        .mobile-link {
+        
+        .mobile-nav-link {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #4a2f2f;
+            font-weight: bold;
+            font-family: 'Noto Sans TC', sans-serif;
             transition: all 0.2s ease;
         }
-        .mobile-link:hover {
-            color: #4a2f2f;
+        
+        .mobile-nav-link:hover {
             transform: scale(1.1);
             opacity: 0.7;
         }
@@ -139,16 +152,15 @@
     </div>
 </nav>
 
-<!-- ✅ 手機選單（修正版） -->
 <div id="mobile-menu-overlay">
     <p class="text-[#4a2f2f] text-xs tracking-widest font-bold opacity-50 mb-6">MENU</p>
     
-    <a href="#home" class="mobile-nav-link">首頁</a>
-    <a href="#contact" class="mobile-nav-link">線上預約</a>
-    <a href="#gallery" class="mobile-nav-link">嚴選菜單</a>
-    <a href="#services" class="mobile-nav-link">服務方式</a>
-    <a href="#about" class="mobile-nav-link">關於我們</a>
-    <a href="#faq" class="mobile-nav-link">常見問題</a>
+    <a href="#home" class="mobile-nav-link" onclick="toggleMobileMenu()">首頁</a>
+    <a href="#contact" class="mobile-nav-link" onclick="toggleMobileMenu()">線上預約</a>
+    <a href="#gallery" class="mobile-nav-link" onclick="toggleMobileMenu()">嚴選菜單</a>
+    <a href="#services" class="mobile-nav-link" onclick="toggleMobileMenu()">服務方式</a>
+    <a href="#about" class="mobile-nav-link" onclick="toggleMobileMenu()">關於我們</a>
+    <a href="#faq" class="mobile-nav-link" onclick="toggleMobileMenu()">常見問題</a>
 </div>
 
     <main>
@@ -170,9 +182,9 @@
                     <span class="text-sm opacity-80">(93則評論)</span>
                 </a>
                 
-                <div class="flex flex-col sm:flex-row gap-4 justify-center flex-col-mobile">
-                    <a href="#gallery" class="btn-primary text-lg px-10 py-4">嚴選菜單</a>
-                    <a href="#contact" class="btn-primary text-lg px-10 py-4">聯絡預約</a>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#gallery" class="inline-block bg-white text-[#4a2f2f] font-bold text-lg px-10 py-4 rounded-xl hover:bg-gray-100 transition-all">嚴選菜單</a>
+                    <a href="#contact" class="inline-block border border-white text-white font-bold text-lg px-10 py-4 rounded-xl hover:bg-white/10 transition-all">聯絡預約</a>
                 </div>
             </div>
         </section>
@@ -219,18 +231,18 @@
                     </div>
 
                     <div class="lg:w-2/3 p-10 bg-white">
-                        <form action="#" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <form id="reservationForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="block text-sm font-bold text-[#4a2f2f]">姓名</label>
-                                <input type="text" placeholder="請輸入您的姓名" class="contact-input" required>
+                                <input type="text" name="name" placeholder="請輸入您的姓名" class="contact-input" required>
                             </div>
                             <div class="space-y-2">
                                 <label class="block text-sm font-bold text-[#4a2f2f]">電話</label>
-                                <input type="tel" placeholder="請輸入聯絡電話" class="contact-input" required>
+                                <input type="tel" name="phone" placeholder="請輸入聯絡電話" class="contact-input" required>
                             </div>
                             <div class="space-y-2">
                                 <label class="block text-sm font-bold text-[#4a2f2f]">預約人數</label>
-                                <select class="contact-input">
+                                <select name="count" class="contact-input">
                                     <option>1 位</option>
                                     <option>2 位</option>
                                     <option>3 位</option>
@@ -240,14 +252,14 @@
                             </div>
                             <div class="space-y-2">
                                 <label class="block text-sm font-bold text-[#4a2f2f]">預約日期</label>
-                                <input type="date" class="contact-input" required>
+                                <input type="date" name="date" class="contact-input" required>
                             </div>
                             <div class="md:col-span-2 space-y-2">
                                 <label class="block text-sm font-bold text-[#4a2f2f]">備註需求</label>
-                                <textarea rows="4" placeholder="是否有過敏原或特殊位子需求？" class="contact-input"></textarea>
+                                <textarea name="note" rows="4" placeholder="是否有過敏原或特殊位子需求？" class="contact-input"></textarea>
                             </div>
                             <div class="md:col-span-2 mt-4">
-                                <button type="submit" class="w-full bg-[#4a2f2f] text-white font-bold py-4 rounded-xl hover:bg-[#3d2727] transition-colors shadow-lg">
+                                <button type="submit" id="submitBtn" class="w-full bg-[#4a2f2f] text-white font-bold py-4 rounded-xl hover:bg-[#3d2727] transition-colors shadow-lg">
                                     送出預約申請
                                 </button>
                             </div>
@@ -423,7 +435,7 @@
                             <span class="faq-icon text-2xl text-gray-400 transition-transform duration-300">+</span>
                         </summary>
                         <div class="p-6 pt-0 text-gray-600 border-t border-gray-50">
-                            店內平均客單價約在 $1 - $200 之間，依個人點餐內容而定。
+                            店內平均客單價約在 $150 - $250 之間，依個人點餐內容而定。
                         </div>
                     </details>
 
@@ -476,9 +488,9 @@
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mb-16">
                 <div class="col-span-1">
-                    <div class="logo-container mb-6">
-                        <img src="images/logo.png" alt="韓館 Logo" class="logo-img">
-                        <h3 class="logo-text text-white">韓館韓式鍋物</h3>
+                    <div class="logo-container mb-6 flex items-center gap-3">
+                        <img src="images/logo.png" alt="韓館 Logo" class="h-10 w-auto">
+                        <h3 class="text-white text-xl font-bold">韓館韓式鍋物</h3>
                     </div>
                     <p class="text-gray-400 leading-relaxed">正宗韓式鍋物 · 暖心暖胃的好味道</p>
                 </div>
@@ -510,17 +522,49 @@
     </footer>
 
     <script>
-        // 切換手機選單顯示/隱藏
+        // ✅ 1. 切換手機選單顯示/隱藏
         function toggleMobileMenu() {
-    const menu = document.getElementById('mobile-menu-overlay');
-    if (menu.style.display === 'none' || menu.style.display === '') {
-        menu.style.display = 'flex'; // 這裡最重要，要把 none 改成 flex
-        setTimeout(() => { menu.style.opacity = '1'; }, 10);
-    } else {
-        menu.style.opacity = '0';
-        setTimeout(() => { menu.style.display = 'none'; }, 300);
-    }
-}
+            const menu = document.getElementById('mobile-menu-overlay');
+            if (menu.style.display === 'none' || menu.style.display === '') {
+                menu.style.display = 'flex';
+                setTimeout(() => { menu.style.opacity = '1'; }, 10);
+            } else {
+                menu.style.opacity = '0';
+                setTimeout(() => { menu.style.display = 'none'; }, 300);
+            }
+        }
+
+        // ✅ 2. 串接 Google Sheet 的表單提交邏輯
+        // ⚠️ 請務必將下方的 URL 替換成你在 Google Apps Script 部署得到的「網頁應用程式 URL」
+        const scriptURL = '你的_GOOGLE_APPS_SCRIPT_網頁應用程式URL';
+        const form = document.getElementById('reservationForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            // 防止重複點擊
+            submitBtn.disabled = true;
+            submitBtn.innerText = '預約資料傳送中...';
+
+            // 使用 fetch 將資料送到 Google 後台
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: new FormData(form)
+            })
+            .then(response => {
+                alert('預約申請已成功送出！老闆將會儘速與您聯繫確認。');
+                submitBtn.disabled = false;
+                submitBtn.innerText = '送出預約申請';
+                form.reset(); // 清空表單
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('系統忙碌中，請直接撥打電話 0981-007-776 進行預約');
+                submitBtn.disabled = false;
+                submitBtn.innerText = '送出預約申請';
+            });
+        });
     </script>
     <script src="js/script.js"></script>
 </body>
