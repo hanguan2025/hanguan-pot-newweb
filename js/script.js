@@ -1,5 +1,5 @@
 /**
- * 韓館韓式鍋物 - 網頁互動邏輯
+ * 韓館韓式鍋物 - 網頁互動邏輯（最終整合版）
  */
 
 // 1. 頁面滾動動畫 (Intersection Observer)
@@ -12,49 +12,38 @@ const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-            // 一旦顯示後就停止觀察
             observer.unobserve(entry.target);
         }
     });
 }, observerOptions);
 
-// 初始化觀察所有 .fade-in 元素
-document.addEventListener('DOMContentLoaded', () => {
-    const fadeElements = document.querySelectorAll('.fade-in');
-    fadeElements.forEach(el => observer.observe(el));
-});
-
-// 2. 手機版選單切換
+// 2. ✅ 手機版選單邏輯
 function toggleMobileMenu() {
-    const menu = document.querySelector('.mobile-menu');
-    const hamburger = document.querySelector('.hamburger');
-    menu.classList.toggle('active');
-    hamburger.classList.toggle('active');
+    const menu = document.getElementById('mobile-menu-overlay');
+    const btn = document.getElementById('menu-btn');
     
-    // 防止背景捲動
-    document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
-}
+    if (!menu || !btn) return;
 
-// 3. 問與答 (FAQ) 折疊功能
-function toggleAccordion(button) {
-    const content = button.nextElementSibling;
-    const icon = button.querySelector('svg');
-    
-    // 切換內容顯示
-    content.classList.toggle('active');
-    
-    // 切換箭頭旋轉
-    if (content.classList.contains('active')) {
-        icon.style.transform = 'rotate(180deg)';
+    // 切換 'open' class 來控制側邊欄滑入/滑出
+    menu.classList.toggle('open');
+    // 切換漢堡按鈕 X 動畫
+    btn.classList.toggle('active');
+
+    // 根據狀態鎖定或釋放頁面滾動，避免手機版後方背景滑動
+    if (menu.classList.contains('open')) {
+        document.body.style.overflow = 'hidden';
     } else {
-        icon.style.transform = 'rotate(0deg)';
+        document.body.style.overflow = '';
     }
 }
 
-// 4. 圖片燈箱效果 (Lightbox)
+// 3. 圖片燈箱 (Lightbox)
 function openLightbox(imgElement) {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
+
+    if (!lightbox || !lightboxImg) return;
+
     lightboxImg.src = imgElement.src;
     lightbox.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -64,80 +53,88 @@ function closeLightbox() {
     const lightbox = document.getElementById('lightbox');
     if (lightbox) {
         lightbox.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-}
-
-// 5. 表單驗證與提交處理
-function handleFormSubmit(event) {
-    event.preventDefault();
-    let isValid = true;
-    const form = event.target;
-    
-    // 簡單的欄位檢查
-    const inputs = form.querySelectorAll('input[required], textarea[required]');
-    inputs.forEach(input => {
-        if (!input.value.trim()) {
-            input.classList.add('input-error');
-            isValid = false;
-        } else {
-            input.classList.remove('input-error');
+        // 只有在選單也關閉的情況下才釋放滾動
+        const menu = document.getElementById('mobile-menu-overlay');
+        if (!menu || !menu.classList.contains('open')) {
+            document.body.style.overflow = '';
         }
-    });
-
-    if (isValid) {
-        // 這裡可以加入實際的發送邏輯
-        alert('感謝您的訊息！我們將儘快與您聯繫。');
-        form.reset();
     }
-
-    return false;
 }
 
-// 6. 深色/淺色模式切換
+// 4. 深色模式切換
 function toggleTheme() {
     const html = document.documentElement;
     const currentTheme = html.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
+
     html.setAttribute('data-theme', newTheme);
-    
-    // 更新圖示
-    const icon = newTheme === 'dark' ? '☀️' : '🌙';
-    const themeIcon = document.getElementById('theme-icon');
-    const themeIconMobile = document.getElementById('theme-icon-mobile');
-    
-    if (themeIcon) themeIcon.textContent = icon;
-    if (themeIconMobile) themeIconMobile.textContent = icon;
-    
-    // 儲存偏好
     localStorage.setItem('theme', newTheme);
+    updateThemeIcons(newTheme);
 }
 
-// 7. 初始化設定 (當頁面載入時)
-(function init() {
-    // 讀取儲存的佈景主題
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    
-    const icon = savedTheme === 'dark' ? '☀️' : '🌙';
-    
-    // 確保 DOM 載入後更新圖示
-    window.addEventListener('load', () => {
-        const themeIcon = document.getElementById('theme-icon');
-        const themeIconMobile = document.getElementById('theme-icon-mobile');
-        if (themeIcon) themeIcon.textContent = icon;
-        if (themeIconMobile) themeIconMobile.textContent = icon;
+function updateThemeIcons(theme) {
+    const icon = theme === 'dark' ? '☀️' : '🌙';
+    const themeIcon = document.getElementById('theme-icon');
+    const themeIconMobile = document.getElementById('theme-icon-mobile');
+    if (themeIcon) themeIcon.textContent = icon;
+    if (themeIconMobile) themeIconMobile.textContent = icon;
+}
+
+// 5. 初始化與事件綁定
+document.addEventListener('DOMContentLoaded', () => {
+    // A. 滾動動畫初始化
+    const fadeElements = document.querySelectorAll('.fade-in');
+    fadeElements.forEach(el => observer.observe(el));
+
+    // B. 選單連結點擊後自動關閉
+    const navLinks = document.querySelectorAll('.mobile-nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu-overlay');
+            if (menu && menu.classList.contains('open')) {
+                toggleMobileMenu();
+            }
+        });
     });
 
-    // 鍵盤監聽 (Esc 鍵關閉燈箱或選單)
+    // C. 主題初始化
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcons(savedTheme);
+
+    // D. 全域鍵盤事件 (ESC 鍵關閉所有覆蓋層)
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
+            // 關閉燈箱
             closeLightbox();
-            const menu = document.querySelector('.mobile-menu');
-            if (menu && menu.classList.contains('active')) {
+            // 關閉手機選單
+            const menu = document.getElementById('mobile-menu-overlay');
+            if (menu && menu.classList.contains('open')) {
                 toggleMobileMenu();
             }
         }
     });
-})();
+});
+
+// 6. 表單提交處理
+function handleFormSubmit(event) {
+    event.preventDefault();
+    const form = event.target;
+    let isValid = true;
+
+    const requiredInputs = form.querySelectorAll('[required]');
+    requiredInputs.forEach(input => {
+        if (!input.value.trim()) {
+            input.classList.add('border-red-500'); // 使用 Tailwind 或自訂 CSS
+            isValid = false;
+        } else {
+            input.classList.remove('border-red-500');
+        }
+    });
+
+    if (isValid) {
+        alert('預約申請已送出，我們將儘速與您聯繫！');
+        form.reset();
+    }
+    return false;
+}
