@@ -97,56 +97,71 @@
             height: 3px;
             margin-bottom: 5px;
             position: relative;
-            background: #ffffff; /* 更改為白色 */
+            background: #ffffff; 
             border-radius: 3px;
             z-index: 1;
         }
 
+        /* 手機選單層級與動畫 */
         .mobile-menu {
             transition: opacity 0.3s ease;
             background-color: #ffffff;
             z-index: 9999;
         }
+        .mobile-link {
+            transition: all 0.2s ease;
+        }
+        .mobile-link:hover {
+            color: #4a2f2f;
+            transform: scale(1.1);
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body class="antialiased overflow-x-hidden">
 
-    <nav class="fixed top-0 left-0 w-full z-50 bg-[var(--background)]/80 backdrop-blur-md border-b border-[var(--border)]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="logo-container">
-                    <img src="images/logo.png" alt="韓館 Logo" class="logo-img">
-                    <h1 class="logo-text text-white">韓館韓式鍋物</h1>
-                </div>
-                
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="nav-link font-medium">首頁</a>
-                    <a href="#gallery" class="nav-link font-medium">嚴選菜單</a>
-                    <a href="#about" class="nav-link font-medium">關於我們</a>
-                    <a href="#contact" class="nav-link font-medium">聯絡預約</a>
-                </div>
-
-                <div class="md:hidden flex items-center gap-4">
-                    <span class="text-white text-sm font-medium opacity-80">MENU</span>
-                    <button class="hamburger flex flex-col justify-center items-center" onclick="toggleMobileMenu()">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                </div>
+    <nav class="fixed top-0 left-0 w-full z-50 bg-[#4a2f2f]/90 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <div class="logo-container flex items-center gap-3">
+                <img src="images/logo.png" alt="韓館 Logo" class="h-12 w-auto">
+                <h1 class="text-xl font-bold text-white" style="font-family: 'Noto Serif TC', serif;">韓館韓式鍋物</h1>
+            </div>
+            
+            <div class="flex items-center">
+                <button id="menu-btn" class="hamburger flex flex-col justify-center items-center p-2" onclick="toggleMobileMenu()">
+                    <span class="block w-7 h-0.5 bg-white mb-1.5 transition-all"></span>
+                    <span class="block w-7 h-0.5 bg-white mb-1.5 transition-all"></span>
+                    <span class="block w-7 h-0.5 bg-white transition-all"></span>
+                </button>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <div class="mobile-menu fixed inset-0 flex flex-col items-center justify-center space-y-6 md:hidden shadow-xl" style="display: none; opacity: 0;">
+<div id="mobile-menu-overlay" class="fixed inset-0 z-[100] bg-white flex-col items-center justify-center space-y-8" style="display: none; opacity: 0; transition: opacity 0.3s ease;">
+    <button class="absolute top-8 right-8 text-4xl text-[#4a2f2f]" onclick="toggleMobileMenu()">✕</button>
+    
+    <p class="text-[#4a2f2f] text-xs tracking-[0.3em] font-bold opacity-40 mb-4">MENU</p>
+    
+    <a href="#home" onclick="toggleMobileMenu()" class="text-2xl font-bold text-[#4a2f2f] hover:opacity-60">首頁</a>
+    <a href="#contact" onclick="toggleMobileMenu()" class="text-2xl font-bold text-[#4a2f2f] hover:opacity-60">線上預約</a>
+    <a href="#gallery" onclick="toggleMobileMenu()" class="text-2xl font-bold text-[#4a2f2f] hover:opacity-60">嚴選菜單</a>
+    <a href="#services" onclick="toggleMobileMenu()" class="text-2xl font-bold text-[#4a2f2f] hover:opacity-60">服務方式</a>
+    <a href="#about" onclick="toggleMobileMenu()" class="text-2xl font-bold text-[#4a2f2f] hover:opacity-60">關於我們</a>
+    <a href="#faq" onclick="toggleMobileMenu()" class="text-2xl font-bold text-[#4a2f2f] hover:opacity-60">常見問題</a>
+</div>
+
+    <div class="mobile-menu fixed inset-0 flex flex-col items-center justify-center space-y-6 shadow-xl" style="display: none; opacity: 0;">
         <div class="absolute top-8 right-8 text-4xl cursor-pointer text-[#4a2f2f]" onclick="toggleMobileMenu()">✕</div>
-        <p class="text-[#4a2f2f] text-xs tracking-widest font-bold opacity-50 mb-2">選單標籤 MENU</p>
+        <p class="text-[#4a2f2f] text-xs tracking-widest font-bold opacity-50 mb-2">MENU</p>
         
-        <a href="#home" onclick="toggleMobileMenu()" class="text-2xl font-bold text-[#4a2f2f]">首頁</a>
-        <a href="#contact" onclick="toggleMobileMenu()" class="text-2xl font-bold text-[#4a2f2f]">線上預約</a>
-        <a href="#services" onclick="toggleMobileMenu()" class="text-2xl font-bold text-[#4a2f2f]">服務方式</a>
-        <a href="#gallery" onclick="toggleMobileMenu()" class="text-2xl font-bold text-[#4a2f2f]">嚴選菜單</a>
-        <a href="#about" onclick="toggleMobileMenu()" class="text-2xl font-bold text-[#4a2f2f]">關於我們</a>
+        <a href="#home" onclick="toggleMobileMenu()" class="mobile-link text-2xl font-bold text-[#4a2f2f]">首頁</a>
+        <a href="#contact" onclick="toggleMobileMenu()" class="mobile-link text-2xl font-bold text-[#4a2f2f]">線上預約</a>
+        <a href="#gallery" onclick="toggleMobileMenu()" class="mobile-link text-2xl font-bold text-[#4a2f2f]">嚴選菜單</a>
+        <a href="#services" onclick="toggleMobileMenu()" class="mobile-link text-2xl font-bold text-[#4a2f2f]">服務方式</a>
+        <a href="#about" onclick="toggleMobileMenu()" class="mobile-link text-2xl font-bold text-[#4a2f2f]">關於我們</a>
+        <a href="#faq" onclick="toggleMobileMenu()" class="mobile-link text-2xl font-bold text-[#4a2f2f]">常見問題</a>
     </div>
 
     <main>
@@ -369,7 +384,7 @@
                         <div class="space-y-4">
                             <h5 class="text-lg font-bold text-[#4a2f2f] border-b pb-2 mb-4">顧客真實評價</h5>
                             <div class="review-card p-4 rounded-lg italic text-gray-700 text-sm">
-                                "很好吃 便宜CP值很高 老闆娘跟老闆人都很好 物美價廉 推薦大家來吃"
+                                "很好吃 便宜CP值很高 老罷娘跟老闆人都很好 物美價廉 推薦大家來吃"
                             </div>
                             <div class="review-card p-4 rounded-lg italic text-gray-700 text-sm">
                                 "麻奶鍋湯頭真的棒，超推薦👍！用餐環境乾淨"
@@ -487,7 +502,6 @@
                         <li><a href="#home" class="hover:text-white transition-colors">首頁</a></li>
                         <li><a href="#gallery" class="hover:text-white transition-colors">嚴選菜單</a></li>
                         <li><a href="#about" class="hover:text-white transition-colors">關於我們</a></li>
-                        <li><a href="#gallery" class="hover:text-white transition-colors">圖庫</a></li>
                         <li><a href="#faq" class="hover:text-white transition-colors">常見問題</a></li>
                     </ul>
                 </div>
@@ -509,20 +523,27 @@
     </footer>
 
     <script>
+        // 切換手機選單顯示/隱藏
         function toggleMobileMenu() {
-            const menu = document.querySelector('.mobile-menu');
-            if (menu.style.display === 'none' || menu.style.display === '') {
-                menu.style.display = 'flex';
-                setTimeout(() => {
-                    menu.style.opacity = '1';
-                }, 10);
-            } else {
-                menu.style.opacity = '0';
-                setTimeout(() => {
-                    menu.style.display = 'none';
-                }, 300);
-            }
-        }
+    const menu = document.getElementById('mobile-menu-overlay');
+    const body = document.body;
+
+    if (menu.style.display === 'none' || menu.style.display === '') {
+        // 開啟選單
+        menu.style.display = 'flex';
+        body.style.overflow = 'hidden'; // 防止背景滾動
+        setTimeout(() => {
+            menu.style.opacity = '1';
+        }, 10);
+    } else {
+        // 關閉選單
+        menu.style.opacity = '0';
+        body.style.overflow = ''; // 恢復滾動
+        setTimeout(() => {
+            menu.style.display = 'none';
+        }, 300);
+    }
+}
     </script>
     <script src="js/script.js"></script>
 </body>
