@@ -164,10 +164,11 @@
                 </h2>
                 <p class="text-xl md:text-2xl mb-6 tracking-widest opacity-90">正宗韓式鍋物 · 暖心暖胃的好味道</p>
                 
-                <a href="https://www.google.com/maps/place/%E9%9F%93%E9%A4%A8%E9%9F%93%E5%BC%8F%E9%8D%8B%E7%89%A9/@22.6208962,120.3097865,17z/data=!4m8!3m7!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!8m2!3d22.6208962!4d120.3097865!9m1!1b1!16s%2Fg%2F11xt6nvc1m?hl=zh-TW&entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D，並且讓此網頁可以隨時更新留言數及評分星級，其他頁面功能不要動到，以下是我現在的程式碼：" target="_blank" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/30 backdrop-blur-md border border-white/20 mb-10 hover:bg-black/50 transition-all transform hover:scale-105">
+                <!-- ★ Google 評分徽章：數字由 js/script.js 自動更新（失敗時保留預設值） -->
+                <a href="https://www.google.com/maps/place/%E9%9F%93%E9%A4%A8%E9%9F%93%E5%BC%8F%E9%8D%8B%E7%89%A9/@22.6208962,120.3097865,17z/data=!4m8!3m7!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!8m2!3d22.6208962!4d120.3097865!9m1!1b1!16s%2Fg%2F11xt6nvc1m?hl=zh-TW" target="_blank" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/30 backdrop-blur-md border border-white/20 mb-10 hover:bg-black/50 transition-all transform hover:scale-105">
                     <span class="text-yellow-400">★</span>
-                    <span class="font-bold">4.8</span>
-                    <span class="text-sm opacity-80">(93則評論)</span>
+                    <span id="rating-score" class="font-bold">4.8</span>
+                    <span id="rating-count" class="text-sm opacity-80">(93則評論)</span>
                 </a>
                 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center flex-col-mobile">
@@ -219,18 +220,22 @@
                     </div>
 
                     <div class="lg:w-2/3 p-10 bg-white">
-                        <form action="#" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- ★ 預約表單：由 js/script.js 送到 Google Apps Script（試算表 + Email） -->
+                        <form id="reservation-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- 防機器人陷阱欄位（請勿刪除，真人看不到） -->
+                            <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;" aria-hidden="true">
+
                             <div class="space-y-2">
                                 <label class="block text-sm font-bold text-[#4a2f2f]">姓名</label>
-                                <input type="text" placeholder="請輸入您的姓名" class="contact-input" required>
+                                <input type="text" name="name" placeholder="請輸入您的姓名" class="contact-input" required>
                             </div>
                             <div class="space-y-2">
                                 <label class="block text-sm font-bold text-[#4a2f2f]">電話</label>
-                                <input type="tel" placeholder="請輸入聯絡電話" class="contact-input" required>
+                                <input type="tel" name="phone" placeholder="請輸入聯絡電話" class="contact-input" required>
                             </div>
                             <div class="space-y-2">
                                 <label class="block text-sm font-bold text-[#4a2f2f]">預約人數</label>
-                                <select class="contact-input">
+                                <select name="people" class="contact-input">
                                     <option>1 位</option>
                                     <option>2 位</option>
                                     <option>3 位</option>
@@ -240,17 +245,39 @@
                             </div>
                             <div class="space-y-2">
                                 <label class="block text-sm font-bold text-[#4a2f2f]">預約日期</label>
-                                <input type="date" class="contact-input" required>
+                                <input type="date" name="date" class="contact-input" required>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-sm font-bold text-[#4a2f2f]">預約時段</label>
+                                <select name="time" class="contact-input" required>
+                                    <option value="">請選擇時段</option>
+                                    <option>11:00</option>
+                                    <option>11:30</option>
+                                    <option>12:00</option>
+                                    <option>12:30</option>
+                                    <option>13:00</option>
+                                    <option>16:00</option>
+                                    <option>16:30</option>
+                                    <option>17:00</option>
+                                    <option>17:30</option>
+                                    <option>18:00</option>
+                                    <option>18:30</option>
+                                    <option>19:00</option>
+                                    <option>19:30</option>
+                                    <option>20:00</option>
+                                    <option>20:30</option>
+                                </select>
                             </div>
                             <div class="md:col-span-2 space-y-2">
                                 <label class="block text-sm font-bold text-[#4a2f2f]">備註需求</label>
-                                <textarea rows="4" placeholder="是否有過敏原或特殊位子需求？" class="contact-input"></textarea>
+                                <textarea name="note" rows="4" placeholder="是否有過敏原或特殊位子需求？" class="contact-input"></textarea>
                             </div>
                             <div class="md:col-span-2 mt-4">
-                                <button type="submit" class="w-full bg-[#4a2f2f] text-white font-bold py-4 rounded-xl hover:bg-[#3d2727] transition-colors shadow-lg">
+                                <button type="submit" class="w-full bg-[#4a2f2f] text-white font-bold py-4 rounded-xl hover:bg-[#3d2727] transition-colors shadow-lg disabled:opacity-60">
                                     送出預約申請
                                 </button>
                             </div>
+                            <p id="reservation-msg" class="md:col-span-2 text-center text-sm font-bold"></p>
                         </form>
                     </div>
                 </div>
@@ -433,7 +460,7 @@
                             <span class="faq-icon text-2xl text-gray-400 transition-transform duration-300">+</span>
                         </summary>
                         <div class="p-6 pt-0 text-gray-600 border-t border-gray-50">
-                            我們位於 <a href="https://www.google.com/maps/place/%E9%9F%93%E9%A4%A8%E9%9F%93%E5%BC%8F%E9%8D%8B%E7%89%A9/@22.6211945,120.3072706,19z/data=!4m15!1m8!3m7!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!2z6Z-T6aSo6Z-T5byP6Y2L54mp!8m2!3d22.6208962!4d120.3097865!10e9!16s%2Fg%2F11xt6nvc1m!3m5!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!8m2!3d22.6208962!4d120.3097865!16s%2Fg%2F11xt6nvc1m?hl=zh-TW&entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D，其他功能則不變，以下是我現在的程式碼：" target="_blank" class="text-[#4a2f2f] font-bold underline underline-offset-4 hover:opacity-70 transition-opacity">高雄市苓雅區苓雅一路262號</a>，鄰近的停車場為 <a href="https://www.google.com/maps/place/%E5%9B%9B%E7%B6%AD%E7%AB%8B%E9%AB%94%E7%AB%99%E5%81%9C%E8%BB%8A%E5%A0%B4(HB434)/@22.6214076,120.3105068,19z/data=!3m1!4b1!4m6!3m5!1s0x346e049b1ace52d7:0xff4dee06a3ca05d1!8m2!3d22.6214064!4d120.3111505!16s%2Fg%2F1vnng3ws?hl=zh-TW&entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D，其他功能不變，完成後給我完整的程式碼。" target="_blank" class="text-[#4a2f2f] font-bold underline underline-offset-4 hover:opacity-70 transition-opacity">四維立體停車場</a>，交通十分便利。
+                            我們位於 <a href="https://www.google.com/maps/place/%E9%9F%93%E9%A4%A8%E9%9F%93%E5%BC%8F%E9%8D%8B%E7%89%A9/@22.6211945,120.3072706,19z/data=!4m15!1m8!3m7!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!2z6Z-T6aSo6Z-T5byP6Y2L54mp!8m2!3d22.6208962!4d120.3097865!10e9!16s%2Fg%2F11xt6nvc1m!3m5!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!8m2!3d22.6208962!4d120.3097865!16s%2Fg%2F11xt6nvc1m?hl=zh-TW" target="_blank" class="text-[#4a2f2f] font-bold underline underline-offset-4 hover:opacity-70 transition-opacity">高雄市苓雅區苓雅一路262號</a>，鄰近的停車場為 <a href="https://www.google.com/maps/place/%E5%9B%9B%E7%B6%AD%E7%AB%8B%E9%AB%94%E7%AB%99%E5%81%9C%E8%BB%8A%E5%A0%B4(HB434)/@22.6214076,120.3105068,19z/data=!3m1!4b1!4m6!3m5!1s0x346e049b1ace52d7:0xff4dee06a3ca05d1!8m2!3d22.6214064!4d120.3111505!16s%2Fg%2F1vnng3ws?hl=zh-TW" target="_blank" class="text-[#4a2f2f] font-bold underline underline-offset-4 hover:opacity-70 transition-opacity">四維立體停車場</a>，交通十分便利。
                         </div>
                     </details>
 
@@ -465,7 +492,7 @@
                 </div>
                 <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12 text-sm md:text-base opacity-80">
                     <div class="flex items-center gap-2"><span>📞</span> 0981-007-776</div>
-                    <div class="flex items-center gap-2"><span>📍</span> <a href="https://www.google.com/maps/place/%E9%9F%93%E9%A4%A8%E9%9F%93%E5%BC%8F%E9%8D%8B%E7%89%A9/@22.6211945,120.3072706,19z/data=!4m15!1m8!3m7!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!2z6Z-T6aSo6Z-T5byP6Y2L54mp!8m2!3d22.6208962!4d120.3097865!10e9!16s%2Fg%2F11xt6nvc1m!3m5!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!8m2!3d22.6208962!4d120.3097865!16s%2Fg%2F11xt6nvc1m?hl=zh-TW&entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D，其他功能則不變，以下是我現在的程式碼：" target="_blank" class="hover:underline">高雄市苓雅區苓雅一路262號</a></div>
+                    <div class="flex items-center gap-2"><span>📍</span> <a href="https://www.google.com/maps/place/%E9%9F%93%E9%A4%A8%E9%9F%93%E5%BC%8F%E9%8D%8B%E7%89%A9/@22.6211945,120.3072706,19z/data=!4m15!1m8!3m7!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!2z6Z-T6aSo6Z-T5byP6Y2L54mp!8m2!3d22.6208962!4d120.3097865!10e9!16s%2Fg%2F11xt6nvc1m!3m5!1s0x346e05da248c58e1:0xe4ba6a3b01b3fc46!8m2!3d22.6208962!4d120.3097865!16s%2Fg%2F11xt6nvc1m?hl=zh-TW" target="_blank" class="hover:underline">高雄市苓雅區苓雅一路262號</a></div>
                     <div class="flex items-center gap-2"><span>📷</span> <a href="https://www.instagram.com/hanguan2025/" target="_blank" class="hover:underline">Instagram</a></div>
                 </div>
             </div>
