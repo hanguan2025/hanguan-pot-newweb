@@ -1,6 +1,9 @@
 /**
- * 韓館韓式鍋物 - 網頁互動邏輯（最終整合版）
+ * 韓館韓式鍋物 - 網頁互動邏輯（最終整合版 + 預約送出 + Google 評分同步）
  */
+
+// ★★★ 部署 Google Apps Script 後，把「網頁應用程式網址」貼在這裡 ★★★
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/請貼上你的部署ID/exec';
 
 // 1. 頁面滾動動畫 (Intersection Observer)
 const observerOptions = {
@@ -114,27 +117,116 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // E. 預約表單
+    initReservationForm();
+
+    // F. Google 評分同步
+    loadGoogleRating();
 });
 
-// 6. 表單提交處理
-function handleFormSubmit(event) {
+// 6. 預約表單：送到 Google 試算表 + Email 通知
+function initReservationForm() {
+    const form = document.getElementById('reservation-form');
+    if (!form) return;
+
+    // 日期不可選過去
+    const dateInput = form.querySelector('input[name="date"]');
+    if (dateInput) {
+        const t = new Date();
+        const pad = n => String(n).padStart(2, '0');
+        dateInput.min = `${t.getFullYear()}-${pad(t.getMonth() + 1)}-${pad(t.getDate())}`;
+    }
+
+    form.addEventListener('submit', handleFormSubmit);
+}
+
+async function handleFormSubmit(event) {
     event.preventDefault();
     const form = event.target;
+    const btn = form.querySelector('button[type="submit"]');
+    const msg = document.getElementById('reservation-msg');
     let isValid = true;
 
-    const requiredInputs = form.querySelectorAll('[required]');
-    requiredInputs.forEach(input => {
+    form.querySelectorAll('[required]').forEach(input => {
         if (!input.value.trim()) {
-            input.classList.add('border-red-500'); // 使用 Tailwind 或自訂 CSS
+            input.classList.add('border-red-500');
             isValid = false;
         } else {
             input.classList.remove('border-red-500');
         }
     });
 
-    if (isValid) {
-        alert('預約申請已送出，我們將儘速與您聯繫！');
+    // 台灣手機 / 市話簡易檢查
+    const phone = form.querySelector('input[name="phone"]');
+    if (phone && !/^[0-9+\-\s()]{8,15}$/.test(phone.value.trim())) {
+        phone.classList.add('border-red-500');
+        isValid = false;
+    }
+
+    if (!isValid) {
+        showReservationMsg(msg, '請確認必填欄位與電話格式是否正確', false);
+        return false;
+    }
+
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '送出中…';
+
+    try {
+        // 用 no-cors 送出（Apps Script 不回 CORS 標頭，無法讀回應，只要沒丟錯就視為已送出）
+        await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: new URLSearchParams(new FormData(form))
+        });
+        showReservationMsg(msg, '預約申請已送出，我們將儘速與您聯繫確認！', true);
         form.reset();
+    } catch (err) {
+        showReservationMsg(msg, '送出失敗，請稍後再試或直接來電 0981-007-776', false);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
     }
     return false;
+}
+
+function showReservationMsg(el, text, ok) {
+    if (!el) { alert(text); return; }
+    el.textContent = text;
+    el.className = 'md:col-span-2 text-center text-sm font-bold ' + (ok ? 'text-green-700' : 'text-red-600');
+}
+
+// 7. 首頁 Google 星級與評論數（失敗時保留 HTML 內預設值）
+async function loadGoogleRating() {
+    const scoreEl = document.getElementById('rating-score');
+    const countEl = document.getElementById('rating-count');
+    if (!scoreEl || !countEl) return;
+
+    // 本機快取 30 分鐘，避免每次進站都打後端
+    try {
+        const cached = JSON.parse(sessionStorage.getItem('gRating') || 'null');
+        if (cached && Date.now() - cached.t < 30 * 60 * 1000) {
+            applyRating(cached.rating, cached.count);
+            return;
+        }
+    } catch (e) {}
+
+    try {
+        const res = await fetch(APPS_SCRIPT_URL + '?action=rating');
+        const data = await res.json();
+        if (data.ok && data.rating && data.count) {
+            applyRating(data.rating, data.count);
+            try {
+                sessionStorage.setItem('gRating', JSON.stringify({ rating: data.rating, count: data.count, t: Date.now() }));
+            } catch (e) {}
+        }
+    } catch (err) {
+        // 靜默失敗：維持預設 4.8 / 93
+    }
+
+    function applyRating(rating, count) {
+        scoreEl.textContent = Number(rating).toFixed(1);
+        countEl.textContent = `(${count}則評論)`;
+    }
 }
